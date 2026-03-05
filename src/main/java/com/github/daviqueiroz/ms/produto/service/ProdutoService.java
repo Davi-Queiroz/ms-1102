@@ -2,6 +2,7 @@ package com.github.daviqueiroz.ms.produto.service;
 
 import com.github.daviqueiroz.ms.produto.dto.ProdutoDTO;
 import com.github.daviqueiroz.ms.produto.entities.Produto;
+import com.github.daviqueiroz.ms.produto.exception.ResourceNotFound;
 import com.github.daviqueiroz.ms.produto.repositores.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +55,15 @@ public class ProdutoService {
             copyDtoToProduto(produtoDTO,produto);
             produto=produtoRepository.save(produto);
             return new ProdutoDTO(produto);
-        }catch (EntityNotFoundException e){
-            throw new EntityNotFoundException("Recusro nao encontrado. ID: " + id);
+        }catch (ResourceNotFound e){
+            throw new ResourceNotFound("Recusro nao encontrado. ID: " + id);
         }
     }
 
     @Transactional
     public void deleteProdutoById(long id){
         if(!produtoRepository.existsById(id)){
-            throw  new EntityNotFoundException("Recusro nao encontrado. ID: " + id);
+            throw  new ResourceNotFound("Recusro nao encontrado. ID: " + id);
         }
         produtoRepository.deleteById(id);
     }
